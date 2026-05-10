@@ -1,0 +1,39 @@
+```
+# Build results
+obj/
+bin/
+
+# User-specific files
+.vs/
+*.user
+*.userosscache
+*.suo
+
+# Log files
+*.log
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Environment specific files
+.env
+.env.local
+*.env.*
+
+# Database
+*.db
+
+# Backup files
+*.bak
+
+# Compressed files in obj folder
+**/*.gz
+
+```

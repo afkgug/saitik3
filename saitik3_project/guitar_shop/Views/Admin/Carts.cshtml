@@ -1,0 +1,68 @@
+@model List<guitar_shop.Models.CartItem>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзины пользователей</title>
+    <link rel="stylesheet" href="~/css/style.css">
+    <style>
+        .admin-container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        .data-table { width: 100%; border-collapse: collapse; background: #fff; }
+        .data-table th, .data-table td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        .data-table th { background: #333; color: #fff; }
+        .navigator { background: #333; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
+        .navigator a { color: #fff; text-decoration: none; }
+        .nav-admin { display: flex; gap: 15px; margin-bottom: 20px; }
+        .nav-admin a { color: #000; text-decoration: none; padding: 10px 15px; background: #e0e0e0; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <nav class="navigator">
+        <a href="/" class="nav-title">Kөrimdik</a>
+        <div class="nav-kor-profile">
+            <a href="/Admin" style="color:#fff;">Назад в панель</a>
+        </div>
+    </nav>
+
+    <div class="admin-container">
+        <h1>Корзины пользователей</h1>
+        
+        <div class="nav-admin">
+            <a href="/Admin#users">Пользователи</a>
+            <a href="/Admin#guitars">Гитары</a>
+            <a href="/Admin/Orders">Заказы</a>
+            <a href="/Admin/Carts">Корзины</a>
+        </div>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Пользователь</th>
+                    <th>Email</th>
+                    <th>Товар</th>
+                    <th>Количество</th>
+                    <th>Цена за шт.</th>
+                    <th>Сумма</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var item in Model)
+                {
+                    <tr>
+                        <td>@(item.User?.FullName ?? item.User?.Username ?? "N/A")</td>
+                        <td>@(item.User?.Email ?? "N/A")</td>
+                        <td>@item.Name</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.Price$</td>
+                        <td>@(item.Price * item.Quantity)$</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

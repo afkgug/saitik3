@@ -1,0 +1,149 @@
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model guitar_shop.Models.ProfileViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль</title>
+    <link rel="stylesheet" href="~/css/style.css">
+</head>
+<body>
+    <nav class="navigator">
+        <a href="/" class="nav-title">Kөrimdik</a>
+        <!-- Кнопка "В магазин" как на главной -->
+        <a href="/Shop" class="main-cont-button-a" style="margin-left:20px;">
+            <button class="main-cont-button" style="background:#000;color:#fff;border:none;padding:10px 20px;cursor:pointer;display:flex;align-items:center;gap:8px;">
+                В магазин
+                <img src="~/img/strelka.svg" alt="" class="main-cont-button-strelka" style="filter:invert(1);width:16px;height:16px;">
+            </button>
+        </a>
+        <div class="nav-kor-profile">
+            <a href="/Cart"><img src="~/img/kor.svg" alt="Корзина" class="nav-kor-img"></a>
+            @{
+                var userName = Context.Session.GetString("UserName");
+                if(string.IsNullOrEmpty(userName)) { <a href="@Url.Action("Login", "Auth")"><img src="~/img/prof.svg" alt="Профиль" class="nav-kor-img"></a> }
+                else { <a href="@Url.Action("Index", "Profile")"><img src="~/img/prof.svg" alt="Профиль" class="nav-kor-img"></a> }
+            }
+        </div>
+    </nav>
+
+    <div class="container-profile">
+        <h1 class="profile-title">Личный кабинет</h1>
+        
+        <div class="profile-content">
+            <div class="profile-info">
+                <form asp-controller="Profile" asp-action="Edit" method="post" style="background:#f5f5f5;padding:20px;border-radius:8px;width:500px;">
+                    <input type="hidden" name="UserId" value="@Model.UserId">
+                    <div style="margin-bottom:15px;">
+                        <label style="display:block;margin-bottom:5px;font-weight:bold;">Имя пользователя</label>
+                        <input type="text" name="FullName" value="@Model.FullName" required style="width:100%;padding:10px;border:1px solid #ddd;border-radius:4px;">
+                    </div>
+                    
+                    <div style="margin-bottom:15px;">
+                        <label style="display:block;margin-bottom:5px;font-weight:bold;">Email</label>
+                        <input type="email" value="@Model.Email" disabled style="width:100%;padding:10px;border:1px solid #ddd;border-radius:4px;background:#e9e9e9;">
+                    </div>
+                    
+                    <div style="margin-bottom:15px;">
+                        <label style="display:block;margin-bottom:5px;font-weight:bold;">Адрес доставки</label>
+                        <textarea name="DeliveryAddress" rows="3" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:4px;">@Model.DeliveryAddress</textarea>
+                    </div>
+                    
+                    <button type="submit" class="login-btn" style="margin-left:345px;padding:12px;background:#000;color:#fff;border:none;border-radius:4px;cursor:pointer;">Сохранить</button>
+                </form>
+            </div>
+
+            <!-- ПРАВАЯ КОЛОНКА - ТОЛЬКО ОФОРМЛЕНИЕ -->
+            <div class="profile-orders-cart">
+                <!-- Мои заказы -->
+                <div class="orders-section">
+                    <h2>Мои заказы</h2>
+                    @if(Model.Orders != null && Model.Orders.Any())
+                    {
+                        <div class="orders-list">
+                            @foreach(var order in Model.Orders)
+                            {
+                                <div class="order-card">
+                                    <div class="order-header">
+                                        <div>
+                                            <span class="order-id">Заказ #@order.UserOrderNumber</span>
+                                            <span class="order-date">@order.CreatedAt.ToString("dd.MM.yyyy HH:mm")</span>
+                                        </div>
+                                        <span class="order-status-badge">@order.Status</span>
+                                    </div>
+                                    <div class="order-items-list">
+                                        @foreach(var item in order.Items)
+                                        {
+                                            <div class="order-item-row">
+                                                <span class="order-item-name">@item.ProductName</span>
+                                                <span class="order-item-quantity">@item.Quantity шт.</span>
+                                                <span class="order-item-price">@item.Price$</span>
+                                                <span class="order-item-total">@(item.Quantity * item.Price)$</span>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="order-footer">
+                                        <span class="order-total-label">Итого:</span>
+                                        <span class="order-total-amount">@order.Items.Sum(i => i.Quantity * i.Price)$</span>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="empty-orders">
+                            <p>У вас пока нет заказов</p>
+                        </div>
+                    }
+                </div>
+
+                <!-- Корзина (без картинок) -->
+                <div class="cart-section">
+                    <h2>Моя корзина</h2>
+                    @if(Model.CartItems != null && Model.CartItems.Any())
+                    {
+                        <div class="cart-items-list">
+                            @foreach(var item in Model.CartItems)
+                            {
+                                <div class="cart-item-card prof">
+                                    <div class="cart-item-info">
+                                        <span class="cart-item-name">@item.Name</span>
+                                        <span class="cart-item-details">@item.Quantity шт. × @item.Price$</span>
+                                    </div>
+                                    <div class="cart-item-sum">@(item.Quantity * item.Price)$</div>
+                                </div>
+                            }
+                            <div class="cart-summary">
+                                <span class="cart-total-label">Всего:</span>
+                                <span class="cart-total-amount">@Model.CartItems.Sum(i => i.Quantity * i.Price)$</span>
+                            </div>
+                            <a href="/Cart" class="cart-link">Перейти в корзину →</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="empty-cart">
+                            <p>Корзина пуста</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 30px;">
+            <form asp-controller="Auth" asp-action="Logout" method="post">
+                <button type="submit" class="logout-btn" style="width:100%;padding:12px;background:#dc3545;color:#fff;border:none;border-radius:4px;cursor:pointer;">Выйти из аккаунта</button>
+            </form>
+        </div>
+    </div>
+
+    <button class="back-button" onclick="history.back()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Назад
+    </button>
+</body>
+</html>
