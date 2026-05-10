@@ -43,8 +43,9 @@
                 <div class="prduct-menu-price">@Model?.Price$</div>
                 <div class="product-menu-category">@Model?.Category | @Model?.Color</div>
                 <div class="product-menu-text">@Model?.Description</div>
-                <form action="/Cart/Add" method="post">
+                <form asp-controller="Cart" asp-action="Add" method="post">
                     <input type="hidden" name="id" value="@Model?.Id">
+                    <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]">
                     <button type="submit" class="product-menu-button">Добавить</button>
                 </form>
             </div>

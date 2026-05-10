@@ -91,15 +91,6 @@ public class AuthController : Controller
     [HttpPost]
     public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl)
     {
-        if (!ModelState.IsValid)
-        {
-            TempData["Email"] = model.Email;
-            ViewData["ReturnUrl"] = returnUrl;
-            return View(model);
-        }
-
-        var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
-
         // Проверка на администратора по специальным учетным данным (login: admin, password: admin123)
         if (model.Email == "admin" && model.Password == "admin123")
         {
@@ -135,6 +126,15 @@ public class AuthController : Controller
             return RedirectToAction("Index", "Admin");
         }
 
+        if (!ModelState.IsValid)
+        {
+            TempData["Email"] = model.Email;
+            ViewData["ReturnUrl"] = returnUrl;
+            return View(model);
+        }
+
+        var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
+
         if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
         {
             TempData["Email"] = model.Email;
@@ -150,9 +150,16 @@ public class AuthController : Controller
 
         _logger.LogInformation($"Пользователь {user.Email} вошел в систему");
 
-        // Логика перенаправления
+        // Логика перенаправления с учетом корзины гостя
         if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
         {
+            // Проверяем, есть ли корзина гостя для переноса
+            var guestCart = HttpContext.Session.GetString("GuestCart");
+            if (!string.IsNullOrEmpty(guestCart))
+            {
+                // Переносим корзину гостя в основную корзину
+                await MergeGuestCartForUser(user.Id);
+            }
             return Redirect(returnUrl);
         }
 
@@ -162,7 +169,47 @@ public class AuthController : Controller
             return RedirectToAction("Index", "Admin");
         }
 
+        // Проверяем, есть ли корзина гостя для переноса
+        var guestCart2 = HttpContext.Session.GetString("GuestCart");
+        if (!string.IsNullOrEmpty(guestCart2))
+        {
+            await MergeGuestCartForUser(user.Id);
+        }
+
         return RedirectToAction("Index", "Profile");
+    }
+
+    // Вспомогательный метод для переноса корзины гостя
+    private async Task MergeGuestCartForUser(int userId)
+    {
+        var guestCart = HttpContext.Session.GetString("GuestCart");
+        if (string.IsNullOrEmpty(guestCart)) return;
+
+        var guestItems = System.Text.Json.JsonSerializer.Deserialize<List<CartItem>>(guestCart);
+        if (guestItems == null || !guestItems.Any()) return;
+
+        foreach (var item in guestItems)
+        {
+            var existingItem = await _db.CartItems.FirstOrDefaultAsync(c => c.UserId == userId && c.Name == item.Name);
+            if (existingItem != null)
+            {
+                existingItem.Quantity += item.Quantity;
+            }
+            else
+            {
+                _db.CartItems.Add(new CartItem
+                {
+                    UserId = userId,
+                    Name = item.Name,
+                    Price = item.Price,
+                    Quantity = item.Quantity,
+                    Image = item.Image
+                });
+            }
+        }
+
+        await _db.SaveChangesAsync();
+        HttpContext.Session.Remove("GuestCart");
     }
 
     public IActionResult Logout()

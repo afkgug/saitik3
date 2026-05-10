@@ -1,39 +1,44 @@
 ```
-# Build results
+# Build artifacts
 obj/
 bin/
+*.pdb
+*.exe
+*.dll
+*.so
+*.dylib
+*.o
+*.obj
 
-# User-specific files
-.vs/
+# ASP.NET Core
 *.user
-*.userosscache
 *.suo
+*.cache
+*.compiled
+*.log
+*.bak
 
-# Log files
+# Database
+*.db
+*.db-journal
+
+# Dependencies
+node_modules/
+packages/
+
+# Logs
 *.log
 
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-desktop.ini
-
-# Environment specific files
+# Environment variables
 .env
 .env.local
 *.env.*
 
-# Database
-*.db
+# OS generated files
+.DS_Store
+Thumbs.db
 
-# Backup files
-*.bak
-
-# Compressed files in obj folder
-**/*.gz
-
+# Temporary files
+*.tmp
+*~
 ```

@@ -40,7 +40,7 @@ public class CartController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add(int id)
+    public async Task<IActionResult> Add(int id, string? returnUrl)
     {
         var guitar = await _db.Guitars.FindAsync(id);
         if (guitar == null) return NotFound();
@@ -75,7 +75,11 @@ public class CartController : Controller
             
             // Показываем модальное окно с предложением авторизоваться
             TempData["ShowAuthModal"] = "true";
-            TempData["ReturnUrl"] = "/Shop";
+            // Сохраняем returnUrl для перенаправления после авторизации
+            if (!string.IsNullOrEmpty(returnUrl))
+                TempData["ReturnUrl"] = returnUrl;
+            else
+                TempData["ReturnUrl"] = "/Shop";
             
             return RedirectToAction("Index", "Shop");
         }
@@ -99,6 +103,12 @@ public class CartController : Controller
         }
 
         await _db.SaveChangesAsync();
+        
+        // Возвращаем пользователя на ту же страницу, где он был
+        if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+        {
+            return Redirect(returnUrl);
+        }
         return RedirectToAction("Index", "Shop");
     }
 

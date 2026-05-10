@@ -16,7 +16,7 @@
             <form action="/Auth/Login" method="post">
                 <input type="hidden" name="ReturnUrl" value="@ViewData["ReturnUrl"]" />
                 <ul class="login-input-ul">
-                    <input placeholder="Email" type="email" name="Email" id="id_email" value="@TempData["Email"]" required>
+                    <input placeholder="Логин или Email" type="text" name="Email" id="id_email" value="@TempData["Email"]" required>
                     <input id="id_password" type="password" placeholder="Пароль" name="Password" required>
                 </ul>
                 @if (ViewBag.Error != null)
@@ -31,6 +31,22 @@
                 <li><a asp-controller="Auth" asp-action="Register">Зарегистрироваться</a></li>
                 <li><a href="/">Вернуться на главную</a></li>
             </ul>
+            @if (TempData["ShowAuthModal"] != null)
+            {
+                <script>
+                    // После успешной авторизации переносим корзину гостя
+                    document.addEventListener('DOMContentLoaded', function() {
+                        fetch('/Cart/MergeGuestCart')
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    console.log('Корзина гостя перенесена');
+                                }
+                            })
+                            .catch(error => console.error('Error:', error));
+                    });
+                </script>
+            }
         </div>
     </div>
 </body>

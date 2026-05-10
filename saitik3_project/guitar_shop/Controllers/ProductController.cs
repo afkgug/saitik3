@@ -13,6 +13,10 @@ public class ProductController : Controller
         var guitar = GuitarService.GetById(id, _env);
         if (guitar == null) return NotFound();
         ViewData["Title"] = guitar.Name;
+        
+        // Передаем текущий URL как returnUrl для формы добавления в корзину
+        ViewData["ReturnUrl"] = $"/Product?id={id}";
+        
         return View(guitar);
     }
 }

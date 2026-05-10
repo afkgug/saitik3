@@ -67,7 +67,7 @@
                         var isOutOfStock = guitarModel == null || guitarModel.StockQuantity < item.Quantity;
                         
                         <div class="cart-item-card" style="@(isOutOfStock ? "opacity:0.6;" : "")">
-                            <form action="/Cart/Remove" method="post" style="margin:0;">
+                            <form asp-controller="Cart" asp-action="Remove" method="post" style="margin:0;">
                                 <input type="hidden" name="id" value="@item.Id">
                                 <button type="submit" class="cart-item-remove">
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>

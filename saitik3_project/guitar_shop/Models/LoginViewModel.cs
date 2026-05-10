@@ -4,8 +4,7 @@ namespace guitar_shop.Models;
 
 public class LoginViewModel
 {
-    [Required(ErrorMessage = "Email обязателен")]
-    [EmailAddress(ErrorMessage = "Некорректный email")]
+    [Required(ErrorMessage = "Логин или email обязателен")]
     public string Email { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Пароль обязателен")]

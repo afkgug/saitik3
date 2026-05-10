@@ -24,6 +24,24 @@ public class ShopController : Controller
         guitars = guitars.Where(g => g.Price >= minPrice && g.Price <= maxPrice).ToList();
 
         ViewData["Title"] = "Каталог";
+        
+        // Если это AJAX запрос, возвращаем только HTML с товарами
+        if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+        {
+            return PartialView("_ProductsPartial", guitars);
+        }
+        
         return View(guitars);
+    }
+    
+    [HttpPost]
+    public IActionResult Search(string search)
+    {
+        var guitars = GuitarService.GetAll(_env);
+        
+        if (!string.IsNullOrWhiteSpace(search))
+            guitars = guitars.Where(g => g.Name.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+        
+        return PartialView("_ProductsPartial", guitars);
     }
 }

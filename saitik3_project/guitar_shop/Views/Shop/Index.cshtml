@@ -64,7 +64,7 @@
             <div class="catalog-main-header">
                 <h2 class="catalog-main-header-title">Гитары (@items.Count)</h2>
             </div>
-            <div class="catalog-main-products-menu">
+            <div class="catalog-main-products-menu" id="products-container">
                 @foreach(var g in items)
                 {
                     <a href="/Product?id=@g.Id" class="catalog-main-list-product">
@@ -90,6 +90,42 @@
             </div>
         </main>
     </div>
+    
+    <script>
+        // AJAX поиск без перезагрузки страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.querySelector('.nav-search-input');
+            const productsContainer = document.getElementById('products-container');
+            const productsCount = document.querySelector('.catalog-main-header-title');
+            
+            if (searchInput) {
+                let debounceTimer;
+                searchInput.addEventListener('input', function() {
+                    clearTimeout(debounceTimer);
+                    const searchText = this.value;
+                    
+                    debounceTimer = setTimeout(function() {
+                        fetch('/Shop/Search', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                                'X-Requested-With': 'XMLHttpRequest'
+                            },
+                            body: 'search=' + encodeURIComponent(searchText)
+                        })
+                        .then(response => response.text())
+                        .then(html => {
+                            productsContainer.innerHTML = html;
+                            // Обновляем количество товаров
+                            const newCount = productsContainer.querySelectorAll('.catalog-main-list-product').length;
+                            productsCount.textContent = 'Гитары (' + newCount + ')';
+                        })
+                        .catch(error => console.error('Error:', error));
+                    }, 300); // Задержка 300мс после последнего ввода
+                });
+            }
+        });
+    </script>
     <button class="back-button" onclick="history.back()">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Назад
     </button>

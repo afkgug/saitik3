@@ -1,0 +1,25 @@
+@model List<guitar_shop.Models.Guitar>
+@{ var items = Model ?? new List<guitar_shop.Models.Guitar>(); }
+
+@foreach(var g in items)
+{
+    <a href="/Product?id=@g.Id" class="catalog-main-list-product">
+        <div class="catalog-main-list-product-img">
+            @if (!string.IsNullOrEmpty(g.Image))
+            {
+                <img src="@g.Image" alt="@g.Name" style="width: 70%; height:120%; padding: 31px; object-fit:cover;">
+            }
+            else
+            {
+                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            }
+        </div>
+        <div class="catalog-main-list-product-info">
+            <div>
+                <div class="catalog-main-menu-product-category">@g.Category</div>
+                <div class="catalog-main-list-product-name">@g.Name</div>
+            </div>
+            <div class="catalog-main-list-product-price">@g.Price$</div>
+        </div>
+    </a>
+}
