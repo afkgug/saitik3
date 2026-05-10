@@ -1,0 +1,78 @@
+@model guitar_shop.Models.OrderViewModel
+@{
+    Layout = null;
+    ViewData["Title"] = "Оформление заказа";
+}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оформление заказа</title>
+    <link rel="stylesheet" href="~/css/style.css">
+</head>
+<body>
+    <nav class="navigator">
+        <a href="/" class="nav-title">Kөrimdik</a>
+        <div class="nav-kor-profile"><a href="/Cart"><img src="~/img/kor.svg" alt="Корзина" class="nav-kor-img"></a></div>
+    </nav>
+
+    <div class="container-order">
+        <div>
+            <h1 class="order-title">ОФОРМЛЕНИЕ ЗАКАЗА</h1>
+            
+            @if (ViewBag.Error != null)
+            {
+                <div style="color:red; font-size:20px; margin:20px 0;">@ViewBag.Error</div>
+            }
+
+            <form asp-action="Checkout" method="post">
+                <div class="order-list-inputs">
+                    <div class="order-list-title">Контактная информация</div>
+                    <input type="text" placeholder="ФИО" asp-for="FullName" required>
+                    <span asp-validation-for="FullName" class="text-danger" style="color:red; font-size:12px;"></span>
+                    
+                    <input type="email" placeholder="Email" asp-for="Email" class="order-list-inputs-mail" required>
+                    <span asp-validation-for="Email" class="text-danger" style="color:red; font-size:12px;"></span>
+                    
+                    <input type="text" placeholder="Адрес доставки" asp-for="Address" required>
+                    <span asp-validation-for="Address" class="text-danger" style="color:red; font-size:12px;"></span>
+                    
+                    <div class="order-list-inputs-button" style="cursor:pointer;">
+                        <button type="submit" style="background:none;border:none;cursor:pointer;width:100%;text-align:center;font-size:16px;">ПОДТВЕРДИТЬ ЗАКАЗ</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="order-menu">
+            <div class="order-menu-title">ВАШ ЗАКАЗ</div>
+            <div class="order-menu-list">
+                @if (Model.Items != null)
+                {
+                    @foreach (var item in Model.Items)
+                    {
+                        <div class="order-menu-list-product">
+                            <div class="order-menu-list-product-info">
+                                <div class="order-menu-list-product-title">@item.ProductName</div>
+                                <div class="order-menu-list-product-text">@item.Quantity шт.</div>
+                            </div>
+                            <div class="order-menu-list-product-price">@(item.Price * item.Quantity)₽</div>
+                        </div>
+                    }
+                }
+            </div>
+            <div class="order-menu-line-alt"></div>
+            <div class="order-menu-all-price">
+                <span class="order-menu-all-price-title">ВСЕГО</span>
+                <span class="order-menu-all-price-price">@Model.TotalPrice₽</span>
+            </div>
+        </div>
+    </div>
+    
+    <button class="back-button" onclick="history.back()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Назад
+    </button>
+</body>
+</html>

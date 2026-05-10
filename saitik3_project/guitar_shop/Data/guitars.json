@@ -1,0 +1,93 @@
+
+[
+  {
+    "Id": 5,
+    "Name": "PRS Custom 24",
+    "Category": "Электрогитара",
+    "Color": "Черный",
+    "Description": "Инструмент выполнен в формате solidbody с фигурным верхом из клёна и декой из махагони.",
+    "Price": 6500.00,
+    "Image": "/img/placeholder5.jpg"
+  },
+  {
+    "Id": 6,
+    "Name": "Gibson Flying V",
+    "Category": "Электрогитара",
+    "Color": "Черный",
+    "Description": ". Она оснащена скоростным грифом SlimTaper™ из красного дерева с накладкой из палисандра.",
+    "Price": 3300.00,
+    "Image": "/img/placeholder6.jpg"
+  },
+  {
+    "Id": 7,
+    "Name": "Jackson Soloist SLX",
+    "Category": "Электрогитара",
+    "Color": "Мультиколор",
+    "Description": "Легендарная гитара наделенная мензурой 25.5 дюйма и системой Флойд Роуз.",
+    "Price": 1400.00,
+    "Image": "/img/placeholder7.jpg"
+  },
+  {
+    "Id": 8,
+    "Name": "Fender Player II Stratocaster",
+    "Category": "Электрогитара",
+    "Color": "Зеленый",
+    "Description": "Гитара с современными обновлениями, которые сделают ваше исполнение более мощным и вдохновляющим.",
+    "Price": 1400.00,
+    "Image": "/img/placeholder8.jpg"
+  },
+  {
+    "Id": 9,
+    "Name": "Schecter Hellraiser Hybrid C-1r",
+    "Category": "Электрогитара",
+    "Color": "Черный",
+    "Description": "Нормальная, пойдет.",
+    "Price": 1080.00,
+    "Image": "/img/placeholder9.jpg"
+  },
+  {
+    "Id": 10,
+    "Name": "Epiphone Matt Heafy Les Paul 7-String",
+    "Category": "Электрогитара",
+    "Color": "Белый",
+    "Description": "Фирменная 7-струнная модель с уникальной звуковой палитрой Звукосниматели Fishman Fluence.",
+    "Price": 1100.00,
+    "Image": "/img/placeholder10.jpg"
+  },
+  {
+    "Id": 11,
+    "Name": "Epiphone Jerry Cantrell 'Wino' Les Paul Custom",
+    "Category": "Электрогитара",
+    "Color": "Красный",
+    "Description": "Фирменная 6-струнная модель гитариста из Alice In Chains.",
+    "Price": 990.00,
+    "Image": "/img/placeholder11.jpg"
+  },
+  {
+    "Id": 12,
+    "Name": "LAVA MUSIC LavaMe4Carbon-Space",
+    "Category": "Акустическая",
+    "Color": "Серый",
+    "Description": "Уникальная стабильность инструментов и идеально сбалансированная структура звучания делают инструменты Lava поистине универсальным решением для любых музыкальных задач.",
+    "Price": 1700.00,
+    "Image": "/img/placeholder12.jpg"
+  },
+    {
+    "Id": 13,
+    "Name": "Yamaha A3R VINTAGE NATURAL",
+    "Category": "Акустическая",
+    "Color": "Натуральный",
+    "Description": "профессиональная электроакустическая гитара для сцены. Звук концертного уровня.",
+    "Price": 1700.00,
+    "Image": "/img/placeholder13.jpg"
+  },
+  {
+    "Id": 14,
+    "Name": "Fender Redondo Special Natural",
+    "Category": "Акустическая",
+    "Color": "Натуральный",
+    "Description": "Новая линейка гитар серии California - Fender Redondo Special, Pau Ferro Fingerboard, Black Pickguard, Natural с подключением.",
+    "Price": 890.00,
+    "Image": "/img/placeholder14.jpg"
+  }
+]

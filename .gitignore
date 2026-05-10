@@ -1,0 +1,44 @@
+```
+# Build artifacts
+obj/
+bin/
+*.pdb
+*.exe
+*.dll
+*.so
+*.dylib
+*.o
+*.obj
+
+# ASP.NET Core
+*.user
+*.suo
+*.cache
+*.compiled
+*.log
+*.bak
+
+# Database
+*.db
+*.db-journal
+
+# Dependencies
+node_modules/
+packages/
+
+# Logs
+*.log
+
+# Environment variables
+.env
+.env.local
+*.env.*
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*~
+```
